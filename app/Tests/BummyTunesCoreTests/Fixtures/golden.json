@@ -1,0 +1,9 @@
+{
+  "sampleRate": 16000,
+  "samples": 96000,
+  "melBands": 96,
+  "melFrames": 374,
+  "patches": 2,
+  "patchFrames": 187,
+  "embeddingDim": 200
+}

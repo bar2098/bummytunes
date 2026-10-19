@@ -1,0 +1,286 @@
+<title>BummyTunes Sonic Map</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Archivo:wght@400;500;600&family=Chivo+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --void:#140A1F; --ink:#1F1030; --ink2:#2A1640; --edge:#3D1E5C;
+  --volt:#A928FF; --volt-dim:#6B1BA6;
+  --acid:#FFE900;
+  --bone:#EFE6FA; --haze:#8A68A8;
+  --disp:"Big Shoulders Display","Arial Narrow",sans-serif;
+  --body:"Archivo",-apple-system,system-ui,sans-serif;
+  --mono:"Chivo Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--void); color:var(--bone);
+  font-family:var(--body); line-height:1.5;
+  background-image:radial-gradient(var(--edge) 1px, transparent 1px);
+  background-size:14px 14px;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:18px 16px 60px}
+
+/* ---------- header ---------- */
+header{
+  background:var(--volt); color:#0B0410;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 18px),0 100%);
+  padding:20px 22px 30px; margin-bottom:20px;
+}
+h1{
+  font-family:var(--disp); font-weight:900; font-size:clamp(38px,9vw,72px);
+  line-height:.86; margin:0; letter-spacing:.01em; text-transform:uppercase;
+  transform:skewX(-5deg); transform-origin:left; text-wrap:balance;
+}
+h1 em{font-style:normal;color:var(--acid);-webkit-text-stroke:1.5px #0B0410}
+.sub{
+  font-family:var(--mono); font-size:11px; text-transform:uppercase;
+  letter-spacing:.16em; margin-top:10px; font-weight:600; opacity:.82;
+}
+
+/* ---------- stat strip ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin-bottom:20px}
+.stat{background:var(--ink);border-left:3px solid var(--acid);padding:10px 12px}
+.stat b{
+  display:block;font-family:var(--disp);font-weight:800;font-size:30px;
+  line-height:1;color:var(--acid);font-variant-numeric:tabular-nums;
+}
+.stat span{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--haze)}
+
+/* ---------- layout ---------- */
+.grid{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:900px){.grid{grid-template-columns:1.25fr .75fr}}
+
+.panel{background:var(--ink);border:1px solid var(--edge);position:relative}
+.panel.slash{clip-path:polygon(0 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%)}
+.phead{
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  padding:11px 14px;border-bottom:1px solid var(--edge);background:var(--ink2);
+}
+.phead h2{
+  font-family:var(--disp);font-weight:800;font-size:21px;margin:0;
+  text-transform:uppercase;letter-spacing:.03em;color:var(--bone);
+}
+.phead .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--acid)}
+
+/* ---------- map ---------- */
+#map{display:block;width:100%;height:auto;aspect-ratio:1/1;cursor:crosshair;touch-action:manipulation}
+@media(min-width:900px){#map{aspect-ratio:4/3}}
+.maphint{
+  padding:9px 14px;font-family:var(--mono);font-size:10px;color:var(--haze);
+  border-top:1px solid var(--edge);letter-spacing:.05em;
+}
+
+/* ---------- search ---------- */
+.searchbox{padding:12px 14px;border-bottom:1px solid var(--edge)}
+input[type=search]{
+  width:100%;background:var(--void);border:1px solid var(--edge);color:var(--bone);
+  font-family:var(--body);font-size:15px;padding:9px 11px;border-radius:0;
+  -webkit-appearance:none;
+}
+input[type=search]:focus{outline:2px solid var(--acid);outline-offset:1px;border-color:var(--acid)}
+.fold{font-family:var(--mono);font-size:10px;color:var(--haze);margin-top:7px;word-break:break-all}
+.fold b{color:var(--acid)}
+
+/* ---------- lists ---------- */
+.list{max-height:420px;overflow-y:auto}
+.row{
+  display:flex;align-items:center;gap:10px;padding:8px 13px;
+  border-bottom:1px solid rgba(61,30,92,.5);cursor:pointer;
+  background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left;color:inherit;font:inherit;
+}
+.row:hover,.row:focus-visible{background:var(--ink2);outline:none}
+.row:focus-visible{box-shadow:inset 3px 0 0 var(--acid)}
+.row .n{
+  font-family:var(--mono);font-size:10px;color:var(--acid);width:30px;flex:none;
+  font-variant-numeric:tabular-nums;
+}
+.row .t{flex:1;min-width:0}
+.row .t i{display:block;font-style:normal;font-size:13.5px;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .t small{display:block;font-size:11px;color:var(--haze);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .bar{width:52px;flex:none}
+.row .bar div{height:5px;background:var(--volt)}
+.row .bar u{display:block;font-family:var(--mono);font-size:9px;color:var(--haze);text-decoration:none;margin-top:2px;font-variant-numeric:tabular-nums}
+.seed{padding:12px 14px;background:var(--ink2);border-bottom:2px solid var(--acid)}
+.seed em{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--acid);font-style:normal}
+.seed strong{display:block;font-family:var(--disp);font-weight:800;font-size:24px;line-height:1.05;margin-top:4px;text-transform:uppercase}
+.seed span{display:block;font-size:12.5px;color:var(--haze);margin-top:3px}
+.empty{padding:26px 14px;text-align:center;color:var(--haze);font-size:13px}
+footer{margin-top:22px;font-family:var(--mono);font-size:10px;color:var(--haze);letter-spacing:.05em;line-height:1.7}
+@media(prefers-reduced-motion:no-preference){
+  .panel,.stat{animation:rise .42s cubic-bezier(.2,.8,.3,1) backwards}
+  .stat:nth-child(2){animation-delay:.05s}.stat:nth-child(3){animation-delay:.1s}.stat:nth-child(4){animation-delay:.15s}
+  .grid .panel:nth-child(2){animation-delay:.12s}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}}
+}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Bummy<em>Tunes</em><br>Sonic Map</h1>
+  <div class="sub">MusiCNN · 200-d embeddings · computed on-device · no server</div>
+</header>
+
+<div class="stats" id="stats"></div>
+
+<div class="grid">
+  <section class="panel slash">
+    <div class="phead"><h2>The Map</h2><span class="tag" id="vartag"></span></div>
+    <canvas id="map"></canvas>
+    <div class="maphint">Tap any point to seed a radio. Nearest points sound alike.</div>
+  </section>
+
+  <section class="panel slash">
+    <div class="phead"><h2>Radio</h2><span class="tag">cosine similarity</span></div>
+    <div class="searchbox">
+      <input type="search" id="q" placeholder="Search — try &quot;pois e&quot; for Pois É" autocomplete="off" spellcheck="false">
+      <div class="fold" id="fold"></div>
+    </div>
+    <div id="seed"></div>
+    <div class="list" id="results"></div>
+  </section>
+</div>
+
+<footer id="foot"></footer>
+</div>
+
+<script>
+const DATA = /*__MAPDATA__*/;
+const T = DATA.tracks;
+
+/* script-aware folding: strips Latin accents, preserves Japanese voicing */
+const KANA = new Set([0x3099,0x309A]);
+function fold(s){
+  const d = s.normalize('NFKD');
+  let out='';
+  for(const ch of d){
+    const c = ch.codePointAt(0);
+    if(KANA.has(c)){ out+=ch; continue; }
+    if(c>=0x0300 && c<=0x036F) continue;
+    out+=ch;
+  }
+  return out.normalize('NFKC').toLowerCase().trim();
+}
+
+/* ---------- stats ---------- */
+const artists = new Set(T.map(t=>t.artistKey));
+const tagged = T.filter(t=>t.source==='tags').length;
+document.getElementById('stats').innerHTML = [
+  [T.length,'tracks embedded'],
+  [artists.size,'canonical artists'],
+  [tagged,'tagged'],
+  [T.length-tagged,'parsed from filename'],
+].map(([n,l])=>`<div class="stat"><b>${n}</b><span>${l}</span></div>`).join('');
+document.getElementById('vartag').textContent =
+  `PC1 ${(DATA.variance[0]*100).toFixed(0)}% · PC2 ${(DATA.variance[1]*100).toFixed(0)}%`;
+document.getElementById('foot').innerHTML =
+  `Embeddings generated locally from your own files with AudioMuse-AI's MusiCNN graph (3.1 MB).<br>`+
+  `Projection is PCA over the 200-d vectors, which ports to Accelerate on device.<br>`+
+  `This page is a proof of the engine and a pitch for the visual direction. Not the app.`;
+
+/* ---------- map ---------- */
+const cv = document.getElementById('map'), cx = cv.getContext('2d');
+let sel = 0, hot = -1, W=0, H=0, DPR=1;
+
+function resize(){
+  const r = cv.getBoundingClientRect();
+  DPR = Math.min(window.devicePixelRatio||1, 2);
+  W = r.width; H = r.height;
+  cv.width = W*DPR; cv.height = H*DPR;
+  cx.setTransform(DPR,0,0,DPR,0,0);
+  draw();
+}
+const PAD = 22;
+const px = t => PAD + (t.x+1)/2 * (W-PAD*2);
+const py = t => PAD + (1-(t.y+1)/2) * (H-PAD*2);
+
+function draw(){
+  cx.clearRect(0,0,W,H);
+  const nb = new Set(T[sel].nbr);
+  for(const t of T){
+    if(t.i===sel || nb.has(t.i)) continue;
+    cx.fillStyle = 'rgba(138,104,168,.45)';
+    cx.beginPath(); cx.arc(px(t),py(t),2,0,7); cx.fill();
+  }
+  cx.strokeStyle='rgba(169,40,255,.5)'; cx.lineWidth=1;
+  for(const j of T[sel].nbr){
+    cx.beginPath(); cx.moveTo(px(T[sel]),py(T[sel])); cx.lineTo(px(T[j]),py(T[j])); cx.stroke();
+  }
+  for(const j of T[sel].nbr){
+    cx.fillStyle='#A928FF';
+    cx.beginPath(); cx.arc(px(T[j]),py(T[j]),4,0,7); cx.fill();
+  }
+  if(hot>=0 && hot!==sel){
+    cx.strokeStyle='#EFE6FA'; cx.lineWidth=1.5;
+    cx.beginPath(); cx.arc(px(T[hot]),py(T[hot]),7,0,7); cx.stroke();
+  }
+  const s=T[sel], sx=px(s), sy=py(s);
+  cx.fillStyle='#FFE900';
+  cx.beginPath(); cx.arc(sx,sy,6.5,0,7); cx.fill();
+  cx.strokeStyle='#FFE900'; cx.lineWidth=1.5; cx.globalAlpha=.55;
+  cx.beginPath(); cx.arc(sx,sy,13,0,7); cx.stroke(); cx.globalAlpha=1;
+}
+
+function nearest(mx,my){
+  let best=-1, bd=1e9;
+  for(const t of T){
+    const dx=px(t)-mx, dy=py(t)-my, d=dx*dx+dy*dy;
+    if(d<bd){bd=d;best=t.i}
+  }
+  return bd < 900 ? best : -1;
+}
+function evtXY(e){
+  const r=cv.getBoundingClientRect();
+  const p = e.touches ? e.touches[0] : e;
+  return [p.clientX-r.left, p.clientY-r.top];
+}
+cv.addEventListener('pointermove', e=>{
+  const [x,y]=evtXY(e); const n=nearest(x,y);
+  if(n!==hot){hot=n; cv.style.cursor = n>=0?'pointer':'crosshair'; draw();}
+});
+cv.addEventListener('pointerdown', e=>{
+  const [x,y]=evtXY(e); const n=nearest(x,y);
+  if(n>=0) select(n);
+});
+
+/* ---------- radio panel ---------- */
+function select(i){
+  sel=i; const s=T[i];
+  document.getElementById('seed').innerHTML =
+    `<div class="seed"><em>Radio seeded on</em><strong>${esc(s.title)}</strong>`+
+    `<span>${esc(s.artist)} — ${esc(s.album)}</span></div>`;
+  document.getElementById('results').innerHTML = s.nbr.map((j,k)=>{
+    const t=T[j], sim=s.sim[k];
+    return `<button class="row" data-i="${j}">
+      <span class="n">${String(k+1).padStart(2,'0')}</span>
+      <span class="t"><i>${esc(t.title)}</i><small>${esc(t.artist)}</small></span>
+      <span class="bar"><div style="width:${Math.max(3,Math.round(sim*52))}px"></div><u>${sim.toFixed(3)}</u></span>
+    </button>`;
+  }).join('');
+  draw();
+}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+document.getElementById('results').addEventListener('click',e=>{
+  const b=e.target.closest('.row'); if(b) select(+b.dataset.i);
+});
+
+/* ---------- search ---------- */
+const q=document.getElementById('q'), foldEl=document.getElementById('fold');
+q.addEventListener('input',()=>{
+  const raw=q.value.trim();
+  if(!raw){ foldEl.innerHTML=''; select(sel); return; }
+  const f=fold(raw);
+  foldEl.innerHTML=`folded query → <b>${esc(f)}</b>`;
+  const hits=T.filter(t=>t.search.includes(f)).slice(0,14);
+  document.getElementById('seed').innerHTML=
+    `<div class="seed"><em>${hits.length} match${hits.length===1?'':'es'}</em>`+
+    `<strong>${esc(raw)}</strong><span>tap a result to start its radio</span></div>`;
+  document.getElementById('results').innerHTML = hits.length ? hits.map((t,k)=>
+    `<button class="row" data-i="${t.i}">
+      <span class="n">${String(k+1).padStart(2,'0')}</span>
+      <span class="t"><i>${esc(t.title)}</i><small>${esc(t.artist)} — ${esc(t.album)}</small></span>
+    </button>`).join('') : `<div class="empty">Nothing matches that.</div>`;
+});
+
+window.addEventListener('resize',resize);
+select(0); resize();
+</script>

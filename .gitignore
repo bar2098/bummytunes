@@ -1,0 +1,48 @@
+# Toolchain: iOS and macOS SDKs and the onnxruntime xcframework. Over a
+# gigabyte, machine specific, and downloaded rather than authored. See the
+# README for where each piece comes from.
+toolchain/
+
+# Build outputs
+build/
+build-mac/
+*.ipa
+*.app/
+*.dSYM/
+
+# SwiftPM
+app/.build/
+.build/
+.swiftpm/
+Package.resolved
+
+# Xcode, if anyone opens it there
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+
+# Derived data from the prototype runs. These hold real library file paths.
+prototype/__pycache__/
+prototype/embeddings.jsonl
+prototype/embeddings.json
+prototype/mapdata.json
+prototype/library.txt
+prototype/sonicmap.html
+prototype/*.log
+
+# Personal library reports
+albums-missing-tracks.txt
+*library*.txt
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Editors and OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.log
