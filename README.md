@@ -44,48 +44,40 @@ so you don't need the App Store or a paid developer account.
 
 ## Building
 
-Builds run from the command line with the swift.org toolchain. **Xcode is not
-required.**
+**Heads up:** these build scripts are written for one specific setup and
+will only work with the requirements below. They call `xcrun` to find Xcode's
+compiler and SDKs, so other versions or setups may need tweaks.
 
-### Prerequisites
+### Requirements
 
-| What | Where |
+| What | Version this was built and tested with |
 |---|---|
 | Mac with Apple Silicon | |
-| Swift 6.3.1 toolchain | [swift.org/install/macos](https://www.swift.org/install/macos/). It installs to `~/Library/Developer/Toolchains/swift-6.3.1-RELEASE.xctoolchain`. |
-| `lld` and `onnxruntime` | `brew install lld onnxruntime` |
-| iPhoneOS 26.5 SDK | [xybp888/iOS-SDKs](https://github.com/xybp888/iOS-SDKs) |
-| macOS 15.5 SDK | From Xcode, or [joseluisq/macosx-sdks](https://github.com/joseluisq/macosx-sdks/releases/tag/15.5) |
-| ONNX Runtime 1.23.0 for iOS | [pod-archive-onnxruntime-c-1.23.0.zip](https://download.onnxruntime.ai/pod-archive-onnxruntime-c-1.23.0.zip) |
+| [Xcode](https://developer.apple.com/xcode/) | Xcode with Swift 6.4, iOS 27 SDK, macOS 27 SDK |
+| [Homebrew](https://brew.sh) `onnxruntime` | 1.29 (`brew install onnxruntime`), for the Mac build |
+| ONNX Runtime for iOS | 1.23.0, from Microsoft: [pod-archive-onnxruntime-c-1.23.0.zip](https://download.onnxruntime.ai/pod-archive-onnxruntime-c-1.23.0.zip) |
 
-The SDKs and the iOS ONNX Runtime go in `toolchain/`, which is git-ignored
-because it's over a gigabyte:
+The SDKs come from Xcode, as Apple intends. Nothing from Apple is bundled in
+this repo.
 
-```
-toolchain/
-├── iOS-SDKs/iPhoneOS26.5.sdk
-├── MacOSX15.5.sdk
-└── ort/onnxruntime.xcframework
-```
-
-One way to set it up:
+Install Xcode, open it once to accept the license, then point the command line
+tools at it:
 
 ```bash
-mkdir -p toolchain && cd toolchain
-
-# iOS SDK (sparse clone, only the one SDK)
-git clone --filter=blob:none --sparse https://github.com/xybp888/iOS-SDKs.git
-git -C iOS-SDKs sparse-checkout set iPhoneOS26.5.sdk
-
-# macOS SDK
-curl -L https://github.com/joseluisq/macosx-sdks/releases/download/15.5/MacOSX15.5.sdk.tar.xz | tar xJ
-
-# ONNX Runtime for iOS
-curl -LO https://download.onnxruntime.ai/pod-archive-onnxruntime-c-1.23.0.zip
-mkdir ort && unzip -q pod-archive-onnxruntime-c-1.23.0.zip -d ort && rm pod-archive-onnxruntime-c-1.23.0.zip
-
-cd ..
+sudo xcode-select -s /Applications/Xcode.app
 ```
+
+The iOS ONNX Runtime goes in `toolchain/ort/`, which is git-ignored:
+
+```bash
+mkdir -p toolchain/ort
+curl -LO https://download.onnxruntime.ai/pod-archive-onnxruntime-c-1.23.0.zip
+unzip -q pod-archive-onnxruntime-c-1.23.0.zip -d toolchain/ort
+rm pod-archive-onnxruntime-c-1.23.0.zip
+```
+
+To use a different toolchain or SDK, set `TC` (folder holding `swiftc`) or
+`SDK` before running a script.
 
 ### iPhone
 
@@ -112,9 +104,7 @@ generated from the Python reference (mel spectrogram, patches, embedding), plus
 queue, radio and library storage behavior.
 
 ```bash
-cd app
-SDKROOT="$PWD/../toolchain/MacOSX15.5.sdk" \
-  ~/Library/Developer/Toolchains/swift-6.3.1-RELEASE.xctoolchain/usr/bin/swift run bummy-verify
+cd app && xcrun swift run bummy-verify
 ```
 
 ### Screenshots

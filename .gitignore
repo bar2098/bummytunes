@@ -1,6 +1,4 @@
-# Toolchain: iOS and macOS SDKs and the onnxruntime xcframework. Over a
-# gigabyte, machine specific, and downloaded rather than authored. See the
-# README for where each piece comes from.
+# Downloaded dependencies (the iOS onnxruntime xcframework). See the README.
 toolchain/
 
 # Build outputs

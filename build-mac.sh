@@ -8,15 +8,14 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
-TC="$HOME/Library/Developer/Toolchains/swift-6.3.1-RELEASE.xctoolchain/usr/bin"
-SDK="$ROOT/toolchain/MacOSX15.5.sdk"
+TC="${TC:-$(dirname "$(xcrun -f swiftc)")}"
+SDK="${SDK:-$(xcrun --sdk macosx --show-sdk-path)}"
 ORT_MAC="/opt/homebrew/opt/onnxruntime"
-LLD="/opt/homebrew/opt/lld/bin/ld64.lld"
 BUILD="$ROOT/build-mac"
 APP="$BUILD/BummyTunes.app"
 TARGET="arm64-apple-macos14.0"
 
-for p in "$TC/swiftc" "$SDK" "$ORT_MAC" "$LLD"; do
+for p in "$TC/swiftc" "$SDK" "$ORT_MAC"; do
   [ -e "$p" ] || { echo "missing: $p" >&2; exit 1; }
 done
 
@@ -41,7 +40,6 @@ echo "==> app"
   -I "$BUILD" -L "$BUILD" -lBummyTunesCore \
   -L "$ORT_MAC/lib" -lonnxruntime \
   -Xlinker -rpath -Xlinker "$ORT_MAC/lib" \
-  -use-ld="$LLD" \
   -o "$APP/Contents/MacOS/BummyTunes" \
   "$ROOT"/app/Sources/BummyTunesApp/*.swift
 

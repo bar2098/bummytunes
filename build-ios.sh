@@ -1,25 +1,22 @@
 #!/bin/bash
-# Build BummyTunes.app for iOS arm64 without Xcode.
+# Build BummyTunes.app for iOS arm64 from the command line.
 #
-# Chain, all public and Apple-ID-free:
-#   swift.org toolchain (ships the iphoneos runtime)
-#   iPhoneOS 26.5 SDK mirrored from xybp888/iOS-SDKs
-#   lld from Homebrew (the 2021 Command Line Tools ld is too old)
+# Uses:
+#   Xcode's Swift toolchain and iPhoneOS SDK (found with xcrun)
 #   onnxruntime.xcframework ios-arm64 slice from download.onnxruntime.ai
 #
 # LiveContainer does not verify signatures, so the output is left unsigned.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
-TC="$HOME/Library/Developer/Toolchains/swift-6.3.1-RELEASE.xctoolchain/usr/bin"
-SDK="$ROOT/toolchain/iOS-SDKs/iPhoneOS26.5.sdk"
+TC="${TC:-$(dirname "$(xcrun -f swiftc)")}"
+SDK="${SDK:-$(xcrun --sdk iphoneos --show-sdk-path)}"
 ORT="$ROOT/toolchain/ort/onnxruntime.xcframework/ios-arm64"
-LLD="/opt/homebrew/opt/lld/bin/ld64.lld"
 BUILD="$ROOT/build"
 APP="$BUILD/Payload/BummyTunes.app"
 TARGET="arm64-apple-ios17.0"
 
-for p in "$TC/swiftc" "$SDK" "$ORT" "$LLD"; do
+for p in "$TC/swiftc" "$SDK" "$ORT"; do
   [ -e "$p" ] || { echo "missing: $p" >&2; exit 1; }
 done
 
@@ -47,7 +44,6 @@ echo "==> compile app"
   -L "$BUILD" -lBummyTunesCore \
   -framework onnxruntime \
   -lc++ -lc++abi \
-  -use-ld="$LLD" \
   -o "$APP/BummyTunes" \
   "$ROOT"/app/Sources/BummyTunesApp/*.swift
 
