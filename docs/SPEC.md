@@ -80,6 +80,7 @@ available), or convert the 3.1 MB graph to CoreML directly.
 - `finamp/` — jmshrv, Flutter. Design and queue-behaviour reference only.
 
 ## Licensing note
-AudioMuse-AI is **AGPL-3.0**. The ONNX model weights are redistributed from its
-release assets. If BummyTunes ships the algorithm and weights, the AGPL terms
-need respecting on the public repo.
+The MusiCNN model comes from [musicnn](https://github.com/jordipons/musicnn)
+(ISC). The ONNX file is AudioMuse-AI's conversion of those weights. The Swift
+pipeline is a reimplementation of the same preprocessing, not a copy of
+AudioMuse-AI's code. BummyTunes itself is PolyForm Noncommercial 1.0.0.

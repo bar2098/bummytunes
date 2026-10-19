@@ -162,11 +162,22 @@ docs/REQUIREMENTS.md          feature requirements
 
 ---
 
-## Credits and licensing
+## Credits
 
-- **[AudioMuse-AI](https://github.com/NeptuneHub/AudioMuse-AI)** by NeptuneHub
-  (AGPL-3.0): the analysis approach and the MusiCNN model weights in `models/`.
+- **[musicnn](https://github.com/jordipons/musicnn)** by Jordi Pons (ISC): the
+  MusiCNN model the embeddings come from.
+- **[AudioMuse-AI](https://github.com/NeptuneHub/AudioMuse-AI)** by NeptuneHub:
+  the idea, the analysis pipeline this follows, and the ONNX conversion of the
+  MusiCNN weights in `models/`.
 - **[Finamp](https://github.com/jmshrv/finamp)** by jmshrv: queue behavior and
   layout reference.
 - **[ONNX Runtime](https://github.com/microsoft/onnxruntime)** by Microsoft (MIT):
   the headers in `app/Sources/COnnxRuntime/include`.
+
+---
+
+## License
+
+[PolyForm Noncommercial 1.0.0](LICENSE.md). Use it, change it, share it, but
+don't make money off it. Third-party pieces listed above keep their own
+licenses.
